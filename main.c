@@ -13,6 +13,7 @@
 #include "mcc_generated_files/adc1.h"
 #include "NRF.h"
 #include "anemometer.h"
+#include "tempsensor.h"
 
 
 int main(void)
