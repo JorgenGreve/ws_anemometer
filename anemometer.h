@@ -16,6 +16,17 @@
 extern "C" {
 #endif
 
+///////////////// NEW CODE NOT IMPLEMENTED YET /////////////////////////////////
+/*
+void wind();
+void getADC();
+void turnTiming();
+void windspeedCal();
+void transmit();
+*/
+////////////////////////////////////////////////////////////////////////////////
+
+
 void getWindspeed(void);    // Calculate windspeed from ADC data
 void transmitMps(void);     // Transmit windspeed
 

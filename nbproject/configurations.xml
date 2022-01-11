@@ -22,6 +22,7 @@
       <itemPath>NRF.h</itemPath>
       <itemPath>anemometer.h</itemPath>
       <itemPath>globalVariables.h</itemPath>
+      <itemPath>tempsensor.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
                    displayName="Linker Files"
@@ -47,6 +48,7 @@
       <itemPath>main.c</itemPath>
       <itemPath>NRF.c</itemPath>
       <itemPath>anemometer.c</itemPath>
+      <itemPath>tempsensor.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

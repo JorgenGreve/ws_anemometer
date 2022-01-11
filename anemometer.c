@@ -23,6 +23,9 @@
 #define channel 0               // ADC channel used
 #define ADCresHIGH 300          // 450mV = 3351
 #define ADCresLOW 200           // 15mV  = 112
+//////////////// NEW CODE NOT IMPLEMENTED YET //////////////////////////////////
+//#define ADCresHiLoLim 250       // NEW DEFINE NOT IMPLEMENTED YET
+////////////////////////////////////////////////////////////////////////////////
 #define intrrTime 0.000010      // Timer 1 interrupt time
 #define trnDist 0.73            // One scoup turn length in meters
 #define calibFact 4,5           // Calibration constant. Changelog:
@@ -70,7 +73,147 @@ float dataAvg = 0;              // Windspeed avg. for extreme value sorting
 long cnt1 = 0;                  // Used to control the transmission speed
 
 
+
+
+/////////// BEGINNING OF !!!NEW!!! CODE ////////////////////////////////////////
+/////////// NEW CODE IS NOT IMPLEMENTED YET ////////////////////////////////////
+/*
+struct adcGet{
+    int conversion;
+    int normADC;
+}adcGet;
+
+struct trnTim{
+    int trn;
+    long oneTrnIntrrCnt;
+    double trnTime;
+}trnTim;
+
+struct windSpeed{
+    double tps;
+    double wsUnc;
+    double mps;
+}windSpeed;
+
+struct tx{
+    char mpsArr[6];
+    int k;
+    char mpsSend[6];
+}tx;
+
+
+void wind(){
+    getADC();
     
+    if(tmr1intrrCnt2 >= 1000){
+        transmit();
+    }
+}
+
+
+void getADC(){
+    struct adcGet conversion, adc;
+    adc.conversion = 0;
+    adc.normADC = 0;
+    
+    /////////// GET ADC CONVERSION RESULT //////////////////////////////////////
+    // MCC generated ADC initialization routine
+    
+    ADC1_Enable();
+    ADC1_ChannelSelect(channel);
+    ADC1_SoftwareTriggerEnable();
+    for(i=0;i <1000;i++){}          // Provide a small delay
+    ADC1_SoftwareTriggerDisable();
+    while(!ADC1_IsConversionComplete(channel));
+    adc.conversion = ADC1_ConversionResultGet(channel);
+    ADC1_Disable(); 
+    
+    /////////// ADC RESULT = HIGH/LOW //////////////////////////////////////////
+    // Decide if the ADC conversion should be interpreted as 1 or 0
+    if(adc.conversion > ADCresHiLoLim){
+            adc.normADC = 1;
+            turnTiming();
+        }
+    else if(adc.conversion <= ADCresHiLoLim){
+            adc.normADC = 0;
+            turnTiming();
+        }
+    else{
+        
+    }
+}
+
+
+void turnTiming(){
+    struct trnTim trn;
+    struct adcGet adc;
+    
+    if(adc.normADC != adc.normADC){
+        if(trnTim.trn == 0){
+            tmr1intrrCnt1 = 0;      //Start timer
+        }
+        trnTim.trn++;
+    }
+    
+    if(trnTim.trn == 2){
+       trnTim.trn = 0; 
+       trnTim.oneTrnIntrrCnt = tmr1intrrCnt1; //Stop timer
+       trnTim.trnTime = trnTim.oneTrnIntrrCnt * intrrTime;
+       
+       windspeedCal();
+    }
+    
+}
+
+
+void windspeedCal(){
+    struct trnTim trn;
+    struct windSpeed tps, wsUnc, mps;
+    windSpeed.tps = 0;
+    windSpeed.wsUnc = 0;   
+    windSpeed.mps = 0;
+    
+    if(trnTim.trnTime != 0){  // Avoid division by zero
+        windSpeed.tps = 1/trnTim.trnTime;  // Turns per second
+        }
+    else{
+        windSpeed.tps = 0.0001;
+        }
+    windSpeed.wsUnc = trnDist * windSpeed.tps;    // Uncalibrated Windspeed
+    windSpeed.mps = windSpeed.wsUnc * calibFact;  // Calibrated windspeed in m/s
+}
+
+
+void transmit(){
+    struct windSpeed mps;
+    struct tx mpsArr, k, mpsSend;
+    tx.mpsArr = {NULL};
+    tx.k = 0;
+    
+    sprintf(tx.mpsArr,"%lf",windSpeed.mps); // Convert double to char array (string)
+    
+    /////////// PREPARE AND TRANSMIT DATA //////////////////////////////////
+    // Inserting a W in front of the windspeed data to sort good data from
+    // bad and to be able to send and process other types of data later on
+    for(tx.k=1;tx.k<7;tx.k++){
+        tx.mpsSend[0] = 'W';
+        tx.mpsSend[k] = tx.mpsArr[k-1];
+        }
+
+    Send_Data_NRF(tx.mpsSend);         // SPI to NRF module
+    
+    tmr1intrrCnt2 = 0;      //Restart transmit delay after tx
+    
+}
+*/
+////////////////////////////////////////////////////////////////////////////////
+/////////// END OF !!!NEW!!! CODE //////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 
 /////////// GET CURRENT WINDSPEED FROM ANEMOMETER //////////////////////////////
 void getWindspeed(void)

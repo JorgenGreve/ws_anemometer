@@ -26,6 +26,10 @@ int main(void)
     
     while (1)
     {
+        ///////////////// NEW CODE NOT IMPLEMENTED YET /////////////////////////
+        //wind();
+        ////////////////////////////////////////////////////////////////////////
+        
         getWindspeed();         // Calculate windspeed from ADC data
         transmitMps();          // Transmit windspeed
     }
